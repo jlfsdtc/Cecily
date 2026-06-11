@@ -1,0 +1,18 @@
+[package]
+name = "kylin-metadata"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+kylin-common = { path = "../kylin-common" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
+arrow.workspace = true
+async-trait.workspace = true

@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+*.md
+docs/
+tests/
+k8s/
+docker-compose.yml
+.env
+.env.local

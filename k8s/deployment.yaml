@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kylin
+  namespace: kylin
+  labels:
+    app: kylin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kylin
+  template:
+    metadata:
+      labels:
+        app: kylin
+    spec:
+      containers:
+      - name: kylin
+        image: kylin-rust:latest
+        ports:
+        - containerPort: 7070
+          name: http
+        envFrom:
+        - configMapRef:
+            name: kylin-config
+        volumeMounts:
+        - name: kylin-data
+          mountPath: /app/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 7070
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 7070
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 3
+      volumes:
+      - name: kylin-data
+        persistentVolumeClaim:
+          claimName: kylin-data-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kylin-data-pvc
+  namespace: kylin
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: standard

@@ -1,0 +1,30 @@
+[package]
+name = "kylin-server"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "kylin-server"
+path = "src/main.rs"
+
+[dependencies]
+kylin-common = { path = "../kylin-common" }
+kylin-metadata = { path = "../kylin-metadata" }
+kylin-storage = { path = "../kylin-storage" }
+kylin-catalog = { path = "../kylin-catalog" }
+kylin-engine = { path = "../kylin-engine" }
+kylin-query = { path = "../kylin-query" }
+kylin-job = { path = "../kylin-job" }
+kylin-api = { path = "../kylin-api" }
+serde.workspace = true
+serde_json.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber = { workspace = true, features = ["env-filter"] }
+tokio.workspace = true
+axum.workspace = true
+tower.workspace = true
+tower-http = { workspace = true, features = ["cors", "fs"] }
+hyper = "1"
+uuid.workspace = true
+chrono.workspace = true

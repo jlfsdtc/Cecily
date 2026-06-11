@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  kylin:
+    build: .
+    ports:
+      - "7070:7070"
+    environment:
+      - KYLIN_SERVER_HOST=0.0.0.0
+      - KYLIN_SERVER_PORT=7070
+      - KYLIN_METADATA_DB_URL=postgres://kylin:kylin@postgres:5432/kylin
+      - KYLIN_DATA_DIR=/app/data
+      - KYLIN_MAX_CONCURRENT_JOBS=4
+      - KYLIN_LOG_LEVEL=info
+    volumes:
+      - kylin-data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7070/api/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=kylin
+      - POSTGRES_PASSWORD=kylin
+      - POSTGRES_DB=kylin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kylin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kylin-data:
+    driver: local
+  postgres-data:
+    driver: local

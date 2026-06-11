@@ -1,0 +1,22 @@
+[package]
+name = "kylin-engine"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+kylin-common = { path = "../kylin-common" }
+kylin-metadata = { path = "../kylin-metadata" }
+kylin-storage = { path = "../kylin-storage" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tokio.workspace = true
+arrow.workspace = true
+parquet.workspace = true
+datafusion.workspace = true
+datafusion-expr.workspace = true
+async-trait.workspace = true
+uuid.workspace = true
+chrono.workspace = true
